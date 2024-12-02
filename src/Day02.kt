@@ -1,11 +1,7 @@
 import kotlin.math.absoluteValue
 
 fun main() {
-    fun parseInput(input: List<String>) = input
-        .map { line ->
-            line.split(" ")
-                .map { num -> num.toInt() }
-        }
+    fun parseInput(input: List<String>) = input.map { line -> line.split(" ").map(String::toInt) }
 
     fun isSafe(input: List<Int>) : Boolean {
         val diffs = input
@@ -23,7 +19,12 @@ fun main() {
     }
 
     fun part2(input: List<String>) : Int {
-        return 0 //todo
+        return parseInput(input).count { nums ->
+            isSafe(nums) or
+                    nums.indices
+                        .map { i -> nums.toMutableList().apply { removeAt(i) } }
+                        .any { restrictedNums -> isSafe(restrictedNums) }
+        }
     }
 
     // Read the input from the `src/Day01.txt` file.
