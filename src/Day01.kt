@@ -1,18 +1,35 @@
+import kotlin.math.absoluteValue
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    // separate columns into two lists
+    fun listPair(input: List<String>): Pair<List<Int>, List<Int>> {
+        val lists = input
+            .map { it.split("\\s+".toRegex()) }
+            .map { it[0].toInt() to it[1].toInt() }
+            .unzip()
+        return lists
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part1(input: List<String>) : Int {
+        val lists = listPair(input)
+
+        // sort each list independently and zip back together
+        return lists.first.sorted()
+            .zip(lists.second.sorted())
+            .sumOf { (first, second) -> (first - second).absoluteValue }
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
+    fun part2(input: List<String>) : Int {
+        val lists = listPair(input)
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+        val secondGrouped = lists.second
+            .groupBy { it }
+            .mapValues { it.value.size }
+
+        return lists.first.sumOf {
+            it * (secondGrouped[it] ?: 0)
+        }
+    }
 
     // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
