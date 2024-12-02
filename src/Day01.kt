@@ -3,31 +3,30 @@ import kotlin.math.absoluteValue
 fun main() {
     // separate columns into two lists
     fun listPair(input: List<String>): Pair<List<Int>, List<Int>> {
-        val lists = input
+        return input
             .map { it.split("\\s+".toRegex()) }
             .map { it[0].toInt() to it[1].toInt() }
             .unzip()
-        return lists
     }
 
     fun part1(input: List<String>) : Int {
-        val lists = listPair(input)
+        val (list1, list2) = listPair(input)
 
         // sort each list independently and zip back together
-        return lists.first.sorted()
-            .zip(lists.second.sorted())
-            .sumOf { (first, second) -> (first - second).absoluteValue }
+        return list1.sorted()
+            .zip(list2.sorted())
+            .sumOf { (a, b) -> (a - b).absoluteValue }
     }
 
     fun part2(input: List<String>) : Int {
-        val lists = listPair(input)
+        val (list1, list2) = listPair(input)
 
-        val secondGrouped = lists.second
+        val list2frequencies = list2
             .groupBy { it }
             .mapValues { it.value.size }
 
-        return lists.first.sumOf {
-            it * (secondGrouped[it] ?: 0)
+        return list1.sumOf {
+            it * (list2frequencies[it] ?: 0)
         }
     }
 
