@@ -1,6 +1,6 @@
 fun main() {
     fun part1(input: List<String>) : Int {
-        return Regex("mul\\((\\d+),(\\d+)\\)")
+        return Regex("""mul\((\d+),(\d+)\)""")
             .findAll(input.joinToString())
             .sumOf { it.groupValues[1].toInt() * it.groupValues[2].toInt() }
     }

@@ -84,7 +84,7 @@ fun main() {
         return parseUpdates(inputUpdates)
             .filter { update -> rules.any { rule -> !rule.isAcceptable(update) } }
             .map { update -> rearrange(update, rules.filter { it.isRelevant(update) }) }
-            .sumOf { update -> update.middlePage() }
+            .sumOf(SafetyManualUpdate::middlePage)
     }
 
     val inputRules = readInput("Day05rules")
